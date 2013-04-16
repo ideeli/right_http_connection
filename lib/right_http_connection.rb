@@ -27,7 +27,7 @@ require "time"
 require "logger"
 
 $:.unshift(File.dirname(__FILE__))
-require "net_fix"
+#require "net_fix"
 
 
 module RightHttpConnection #:nodoc:
@@ -264,7 +264,7 @@ them.
     end
 
     def reset_fileptr_offset(request, offset = 0)
-      if(request.body_stream && request.body_stream.respond_to?(:pos))
+      if(request && request.body_stream && request.body_stream.respond_to?(:pos))
         begin
           request.body_stream.pos = offset
         rescue Exception => e
@@ -305,6 +305,7 @@ them.
           @http.verify_callback = verifyCallbackProc
           @http.ca_file         = ca_file
         end
+        @http.verify_mode     = OpenSSL::SSL::VERIFY_NONE
       end
       # open connection
       @http.start
